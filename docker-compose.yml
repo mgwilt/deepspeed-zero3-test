@@ -1,0 +1,60 @@
+version: '3.8'  # Ensure you specify the version
+
+services:
+  worker-1:
+    build: .
+    container_name: worker-1
+    environment:
+      RANK: 0
+      WORLD_SIZE: 3
+      MASTER_ADDR: worker-1
+      MASTER_PORT: 12345
+      NVIDIA_VISIBLE_DEVICES: 0
+    networks:
+      - distributed-net
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    runtime: nvidia
+
+  worker-2:
+    build: .
+    container_name: worker-2
+    environment:
+      RANK: 1
+      WORLD_SIZE: 3
+      MASTER_ADDR: worker-1
+      MASTER_PORT: 12345
+      NVIDIA_VISIBLE_DEVICES: 0
+    networks:
+      - distributed-net
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    runtime: nvidia
+
+  worker-3:
+    build: .
+    container_name: worker-3
+    environment:
+      RANK: 2
+      WORLD_SIZE: 3
+      MASTER_ADDR: worker-1
+      MASTER_PORT: 12345
+      NVIDIA_VISIBLE_DEVICES: 0
+    networks:
+      - distributed-net
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    runtime: nvidia
+
+networks:
+  distributed-net:
+    driver: bridge
