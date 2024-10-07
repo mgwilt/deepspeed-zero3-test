@@ -1,4 +1,4 @@
-version: '3.8'  # Ensure you specify the version
+version: '3.8'
 
 services:
   worker-1:
